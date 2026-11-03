@@ -3,18 +3,17 @@ import unittest
 
 class Solution:
     def mergeCharacters(self, s: str, k: int) -> str:
-        s_len = len(s)
-        for i in range(s_len):
-            check_range = min(s_len, i + k + 1)
-            for j in range(i + 1, check_range):
-                if s[j] == s[i]:
-                    return self.mergeCharacters(s[:j] + s[j + 1 :], k)
+        out = ""
+        for idx, char in enumerate(s):
+            # If char is NOT a copy of an earlier character, include it in the output
+            previous_k_chars = set(out[-k:])
+            if char not in previous_k_chars:
+                out += char
 
-        return s
+        return out
 
 
 class SolutionTest(unittest.TestCase):
-
     def test_no_changes(self):
         solution = Solution()
         self.assertEqual("abc", solution.mergeCharacters("abc", 2))
